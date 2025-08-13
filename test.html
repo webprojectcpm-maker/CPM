@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - CPM Sistema de Etapas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .warning { color: #f59e0b; }
+        .highlight { color: #2563eb; font-weight: bold; }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+        .step-demo {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste do Sistema de Etapas CPM</h1>
+    
+    <div class="test-section">
+        <h2>✅ Funcionalidades Implementadas</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🎨 Interface Moderna</h3>
+                <ul>
+                    <li class="success">Sistema de etapas com navegação intuitiva</li>
+                    <li class="success">Progress bar visual elegante</li>
+                    <li class="success">Design responsivo e minimalista</li>
+                    <li class="success">Animações suaves entre etapas</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>📝 Formulário Inteligente</h3>
+                <ul>
+                    <li class="success">Validação em tempo real</li>
+                    <li class="success">Upload de imagem PNG/JPG/WebP</li>
+                    <li class="success">Gestão dinâmica de jogadores</li>
+                    <li class="success">Revisão completa antes do envio</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>📄 PDF Profissional</h3>
+                <ul>
+                    <li class="success">Geração automática com logo</li>
+                    <li class="success">Layout organizado e legível</li>
+                    <li class="success">Todos os dados incluídos</li>
+                    <li class="success">Formatação para impressão</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>📱 Integração WhatsApp</h3>
+                <ul>
+                    <li class="success">Mensagem simplificada</li>
+                    <li class="success">Redirecionamento automático</li>
+                    <li class="success">PDF anexado automaticamente</li>
+                    <li class="success">Processo simplificado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Como Funciona o Sistema de Etapas</h2>
+        
+        <div class="step-demo">
+            <h3><span class="step-number">1</span>Logo do Clube</h3>
+            <p>Primeira etapa: usuário carrega a logo oficial do time</p>
+            <ul>
+                <li>Upload por clique ou drag & drop</li>
+                <li>Validação de formato e tamanho</li>
+                <li>Preview em tempo real</li>
+                <li>Botão "Próximo" só ativa após upload válido</li>
+            </ul>
+        </div>
+
+        <div class="step-demo">
+            <h3><span class="step-number">2</span>Dados do Clube</h3>
+            <p>Segunda etapa: informações administrativas do time</p>
+            <ul>
+                <li>Nome do clube (obrigatório)</li>
+                <li>Dono (obrigatório)</li>
+                <li>Capitão (obrigatório)</li>
+                <li>Técnico (opcional)</li>
+                <li>Observações (opcional)</li>
+                <li>Validação em tempo real</li>
+            </ul>
+        </div>
+
+        <div class="step-demo">
+            <h3><span class="step-number">3</span>Jogadores</h3>
+            <p>Terceira etapa: gestão da equipe</p>
+            <ul>
+                <li>Mínimo 6, máximo 10 jogadores</li>
+                <li>ID e Nick obrigatórios</li>
+                <li>Posições: GL, VL, PV</li>
+                <li>Adicionar/remover jogadores</li>
+                <li>Validação automática</li>
+            </ul>
+        </div>
+
+        <div class="step-demo">
+            <h3><span class="step-number">4</span>Finalizar</h3>
+            <p>Quarta etapa: revisão e envio</p>
+            <ul>
+                <li>Revisão completa de todos os dados</li>
+                <li>Logo do clube exibida</li>
+                <li>Lista de jogadores organizada</li>
+                <li>Geração automática do PDF</li>
+                <li>Redirecionamento para WhatsApp</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Como Testar</h2>
+        <ol>
+            <li><strong>Clique em "Testar Sistema de Etapas"</strong></li>
+            <li><strong>Etapa 1:</strong> Carregue uma imagem (PNG, JPG ou WebP)</li>
+            <li><strong>Etapa 2:</strong> Preencha nome, dono e capitão</li>
+            <li><strong>Etapa 3:</strong> Adicione 6-10 jogadores com posições</li>
+            <li><strong>Etapa 4:</strong> Revise os dados e clique em "Finalizar"</li>
+            <li><strong>PDF:</strong> Será gerado automaticamente com a logo</li>
+            <li><strong>WhatsApp:</strong> Você será redirecionado para enviar</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 Configurações do WhatsApp</h2>
+        <p><strong>Número configurado:</strong> <span class="highlight">+55 11 98672-4226</span></p>
+        <p><strong>Mensagem simplificada:</strong> "Quero inscrever meu time 'NOME_DO_TIME' na CPM."</p>
+        <p><strong>PDF incluído:</strong> Com logo e todos os dados da inscrição</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 Testes Disponíveis</h2>
+        <button onclick="window.open('index.html', '_blank')">Testar Página Principal</button>
+        <button onclick="window.open('inscricao.html', '_blank')">Testar Sistema de Etapas</button>
+    </div>
+
+    <div class="test-section">
+        <h2>⚠️ Observações Importantes</h2>
+        <ul>
+            <li class="warning">Para o PDF funcionar, é necessário conexão com internet</li>
+            <li class="warning">O WhatsApp Web deve estar disponível no navegador</li>
+            <li class="success">Sistema de etapas com validação em tempo real</li>
+            <li class="success">PDF gerado automaticamente com logo incluída</li>
+            <li class="success">Interface totalmente responsiva e moderna</li>
+            <li class="success">Navegação intuitiva entre etapas</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🚀 Tecnologias e Recursos</h2>
+        <ul>
+            <li><strong>HTML5:</strong> Estrutura semântica e acessível</li>
+            <li><strong>CSS3:</strong> Gradientes, sombras e animações</li>
+            <li><strong>JavaScript ES6+:</strong> Sistema de etapas e validações</li>
+            <li><strong>jsPDF:</strong> Geração de PDF com logo</li>
+            <li><strong>Ícones SVG:</strong> Interface moderna e escalável</li>
+            <li><strong>Design Responsivo:</strong> Funciona em todos os dispositivos</li>
+            <li><strong>Validação Inteligente:</strong> Feedback em tempo real</li>
+            <li><strong>Progress Bar:</strong> Indicador visual de progresso</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>🎨 Características do Design</h2>
+        <ul>
+            <li><strong>Progress Bar:</strong> Barra de progresso visual elegante</li>
+            <li><strong>Etapas Visuais:</strong> Números e labels para cada etapa</li>
+            <li><strong>Animações:</strong> Transições suaves entre etapas</li>
+            <li><strong>Gradientes:</strong> Botões e elementos com gradientes modernos</li>
+            <li><strong>Sombras:</strong> Profundidade e elevação visual</li>
+            <li><strong>Cores:</strong> Paleta harmoniosa e profissional</li>
+            <li><strong>Tipografia:</strong> Hierarquia clara e legível</li>
+        </ul>
+    </div>
+</body>
+</html>
