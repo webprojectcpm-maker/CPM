@@ -32,9 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Add click animation to all buttons
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('button, a').forEach(btn => {
         btn.addEventListener('click', function(e) {
-            // Add a subtle animation
+            if (prefersReducedMotion) return;
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = '';
@@ -124,15 +125,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Smooth parallax effect for floating cards
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.floating-card');
-        
-        parallaxElements.forEach((el, index) => {
-            const speed = 0.5 + (index * 0.1);
-            const yPos = -(scrolled * speed);
-            el.style.transform = `translateY(${yPos}px)`;
-        });
-    }, { passive: true });
+    if (!prefersReducedMotion) {
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.floating-card');
+            
+            parallaxElements.forEach((el, index) => {
+                const speed = 0.5 + (index * 0.1);
+                const yPos = -(scrolled * speed);
+                el.style.transform = `translateY(${yPos}px)`;
+            });
+        }, { passive: true });
+    }
 });
 

@@ -401,7 +401,6 @@ body {
 .feature-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
-    border-color: var(--secondary);
 }
 
 .feature-icon {
@@ -647,4 +646,156 @@ body {
         width: 60px;
         height: 60px;
     }
+}
+
+/* =============================
+   Design upgrades (global)
+   ============================= */
+
+/* Tipografia fluida para títulos */
+.hero-title {
+    font-size: clamp(2rem, 3.25vw + 1rem, 3.75rem);
+}
+
+.section-title {
+    font-size: clamp(1.75rem, 1.5vw + 1rem, 2.75rem);
+}
+
+/* Hairline gradiente no header ao rolar */
+.header.scrolled::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--secondary), var(--accent), transparent);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Divisor ondulado da seção hero */
+.hero {
+    position: relative;
+}
+
+.hero .section-divider {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 120px;
+    color: var(--bg-primary);
+}
+
+.hero .section-divider svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Bordas em gradiente para cards de features */
+.feature-card {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--bg-primary), var(--bg-primary)) padding-box,
+        linear-gradient(135deg, var(--secondary), var(--accent)) border-box;
+}
+
+/* Melhor foco acessível */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35), 0 0 0 6px rgba(6, 182, 212, 0.2);
+}
+
+/* Microinterações e realce nos CTAs */
+.primary-btn,
+.whatsapp-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.primary-btn:hover,
+.whatsapp-btn:hover {
+    filter: brightness(1.05);
+}
+
+.primary-btn::before,
+.whatsapp-btn::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--radius);
+    background: radial-gradient(120% 120% at 50% 0%, rgba(255, 255, 255, 0.25), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.primary-btn:hover::before,
+.whatsapp-btn:hover::before {
+    opacity: 1;
+}
+
+/* Performance para elementos flutuantes */
+.floating-card {
+    will-change: transform;
+}
+
+/* Redução de movimento para acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+    .floating-card,
+    .feature-card,
+    .primary-btn,
+    .whatsapp-btn,
+    .header,
+    .hero-title,
+    .hero-description,
+    .hero-badge {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Modo escuro automático */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #0b0f19;
+        --bg-secondary: #0e1627;
+        --bg-tertiary: #111a2e;
+        --text-primary: #f3f4f6;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --border: #1f2937;
+        --border-light: #0b1220;
+        --primary: #0ea5e9;
+        --secondary: #60a5fa;
+        --accent: #22d3ee;
+    }
+
+    .header.scrolled {
+        background: rgba(13, 18, 32, 0.85);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .feature-card {
+        background:
+            linear-gradient(#0f172a, #0f172a) padding-box,
+            linear-gradient(135deg, var(--secondary), var(--accent)) border-box;
+    }
+
+    .social-link {
+        background: #0f172a;
+        border-color: var(--border);
+        color: var(--text-secondary);
+    }
+}
+
+/* Seleção de texto agradável */
+::selection {
+    background: rgba(37, 99, 235, 0.2);
 }
