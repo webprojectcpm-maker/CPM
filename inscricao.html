@@ -30,6 +30,7 @@
 
     <main class="inscription-main">
         <div class="container">
+            <!-- Header da Inscrição -->
             <div class="inscription-header">
                 <div class="inscription-badge">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -48,19 +49,45 @@
                 </p>
             </div>
 
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Logo</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Dados</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Jogadores</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Finalizar</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulário Multi-Etapas -->
             <form id="teamForm" class="inscription-form" novalidate>
-                <div class="form-grid">
-                    <!-- Coluna Esquerda: Upload da Logo -->
-                    <div class="form-section">
-                        <div class="section-header">
+                <!-- Etapa 1: Logo do Clube -->
+                <div class="form-step active" id="step1">
+                    <div class="step-content">
+                        <div class="step-header">
                             <h2>Logo do Clube</h2>
-                            <p>Carregue a logo oficial do seu time</p>
+                            <p>Carregue a logo oficial do seu time para começar</p>
                         </div>
                         
                         <div class="upload-area" id="uploadArea">
                             <div class="upload-content">
                                 <div class="upload-icon">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                                         <polyline points="7,10 12,15 17,10"/>
                                         <line x1="12" y1="15" x2="12" y2="3"/>
@@ -101,74 +128,82 @@
                             <div id="logoError" class="error-message" style="display: none;"></div>
                         </div>
                     </div>
+                    
+                    <div class="step-actions">
+                        <button type="button" class="next-btn" id="nextStep1" disabled>
+                            <span>Próximo</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
-                    <!-- Coluna Direita: Dados do Clube -->
-                    <div class="form-section">
-                        <div class="section-header">
+                <!-- Etapa 2: Dados do Clube -->
+                <div class="form-step" id="step2">
+                    <div class="step-content">
+                        <div class="step-header">
                             <h2>Dados do Clube</h2>
-                            <p>Informações administrativas do time</p>
+                            <p>Informações administrativas do seu time</p>
                         </div>
 
-                        <div class="form-group">
-                            <label for="clubName" class="form-label">
-                                Nome do Clube <span class="required">*</span>
-                            </label>
-                            <input 
-                                id="clubName" 
-                                name="name" 
-                                type="text" 
-                                class="form-input" 
-                                placeholder="Digite o nome do seu clube"
-                                required 
-                            />
-                            <div id="clubNameError" class="error-message" style="display: none;"></div>
-                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="clubName" class="form-label">
+                                    Nome do Clube <span class="required">*</span>
+                                </label>
+                                <input 
+                                    id="clubName" 
+                                    name="name" 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="Digite o nome do seu clube"
+                                    required 
+                                />
+                                <div id="clubNameError" class="error-message" style="display: none;"></div>
+                            </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Administradores</label>
-                            <div class="admin-grid">
-                                <div class="form-group">
-                                    <label for="owner" class="form-label">
-                                        Dono <span class="required">*</span>
-                                    </label>
-                                    <input 
-                                        id="owner" 
-                                        name="owner" 
-                                        type="text" 
-                                        class="form-input" 
-                                        placeholder="Nome do dono"
-                                        required 
-                                    />
-                                    <div id="ownerError" class="error-message" style="display: none;"></div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="captain" class="form-label">
-                                        Capitão <span class="required">*</span>
-                                    </label>
-                                    <input 
-                                        id="captain" 
-                                        name="captain" 
-                                        type="text" 
-                                        class="form-input" 
-                                        placeholder="Nome do capitão"
-                                        required 
-                                    />
-                                    <div id="captainError" class="error-message" style="display: none;"></div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="coach" class="form-label">
-                                        Técnico <span class="optional">(opcional)</span>
-                                    </label>
-                                    <input 
-                                        id="coach" 
-                                        name="coach" 
-                                        type="text" 
-                                        class="form-input" 
-                                        placeholder="Nome do técnico"
-                                    />
-                                </div>
+                            <div class="form-group">
+                                <label for="owner" class="form-label">
+                                    Dono <span class="required">*</span>
+                                </label>
+                                <input 
+                                    id="owner" 
+                                    name="owner" 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="Nome do dono"
+                                    required 
+                                />
+                                <div id="ownerError" class="error-message" style="display: none;"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="captain" class="form-label">
+                                    Capitão <span class="required">*</span>
+                                </label>
+                                <input 
+                                    id="captain" 
+                                    name="captain" 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="Nome do capitão"
+                                    required 
+                                />
+                                <div id="captainError" class="error-message" style="display: none;"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="coach" class="form-label">
+                                    Técnico <span class="optional">(opcional)</span>
+                                </label>
+                                <input 
+                                    id="coach" 
+                                    name="coach" 
+                                    type="text" 
+                                    class="form-input" 
+                                    placeholder="Nome do técnico"
+                                />
                             </div>
                         </div>
 
@@ -185,52 +220,140 @@
                             ></textarea>
                         </div>
                     </div>
+                    
+                    <div class="step-actions">
+                        <button type="button" class="prev-btn" id="prevStep2">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                            <span>Anterior</span>
+                        </button>
+                        <button type="button" class="next-btn" id="nextStep2" disabled>
+                            <span>Próximo</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Seção de Jogadores -->
-                <div class="form-section players-section">
-                    <div class="section-header">
-                        <div class="section-title-group">
+                <!-- Etapa 3: Jogadores -->
+                <div class="form-step" id="step3">
+                    <div class="step-content">
+                        <div class="step-header">
                             <h2>Jogadores</h2>
-                            <span class="players-counter" id="playersCounter">0 de 10</span>
+                            <p>Adicione entre 6 e 10 jogadores ao seu time</p>
                         </div>
-                        <p>Adicione entre 6 e 10 jogadores ao seu time</p>
-                    </div>
 
-                    <div class="players-container">
-                        <div id="players" class="players-list"></div>
-                        
-                        <div class="players-actions">
-                            <button type="button" class="add-player-btn" id="addPlayer">
+                        <div class="players-container">
+                            <div class="players-header">
+                                <div class="players-counter" id="playersCounter">0 de 10</div>
+                                <button type="button" class="add-player-btn" id="addPlayer">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                    Adicionar jogador
+                                </button>
+                            </div>
+                            
+                            <div id="players" class="players-list"></div>
+                            
+                            <div class="players-hint">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"/>
-                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="m9 12 2 2 4-4"/>
                                 </svg>
-                                Adicionar jogador
-                            </button>
-                            <span class="players-hint">Mínimo 6, máximo 10 jogadores</span>
+                                Mínimo 6, máximo 10 jogadores
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button type="button" class="prev-btn" id="prevStep3">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                            <span>Anterior</span>
+                        </button>
+                        <button type="button" class="next-btn" id="nextStep3" disabled>
+                            <span>Próximo</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Etapa 4: Finalizar -->
+                <div class="form-step" id="step4">
+                    <div class="step-content">
+                        <div class="step-header">
+                            <h2>Finalizar Inscrição</h2>
+                            <p>Revise todos os dados antes de finalizar</p>
+                        </div>
+
+                        <div class="review-container">
+                            <div class="review-section">
+                                <h3>Logo do Clube</h3>
+                                <div class="review-logo">
+                                    <img id="reviewLogo" alt="Logo do clube" class="review-logo-img">
+                                </div>
+                            </div>
+
+                            <div class="review-section">
+                                <h3>Dados do Clube</h3>
+                                <div class="review-data">
+                                    <div class="review-item">
+                                        <span class="review-label">Nome:</span>
+                                        <span class="review-value" id="reviewName"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">Dono:</span>
+                                        <span class="review-value" id="reviewOwner"></span>
+                                    </div>
+                                    <div class="review-item">
+                                        <span class="review-label">Capitão:</span>
+                                        <span class="review-value" id="reviewCaptain"></span>
+                                    </div>
+                                    <div class="review-item" id="reviewCoachItem" style="display: none;">
+                                        <span class="review-label">Técnico:</span>
+                                        <span class="review-value" id="reviewCoach"></span>
+                                    </div>
+                                    <div class="review-item" id="reviewNotesItem" style="display: none;">
+                                        <span class="review-label">Observações:</span>
+                                        <span class="review-value" id="reviewNotes"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="review-section">
+                                <h3>Jogadores</h3>
+                                <div class="review-players" id="reviewPlayers"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-actions">
+                        <button type="button" class="prev-btn" id="prevStep4">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m15 18-6-6 6-6"/>
+                            </svg>
+                            <span>Anterior</span>
+                        </button>
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <span class="btn-text">Finalizar Inscrição</span>
+                            <div class="btn-spinner" style="display: none;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                                </svg>
+                            </div>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Mensagens de erro -->
                 <div id="formError" class="form-error" style="display: none;"></div>
-
-                <!-- Ações do formulário -->
-                <div class="form-actions">
-                    <div class="form-info">
-                        <p>Ao enviar, seus dados serão recebidos e analisados pela nossa equipe.</p>
-                        <a href="#" class="privacy-link">Política de privacidade</a>
-                    </div>
-                    <button type="submit" class="submit-btn" id="submitBtn">
-                        <span class="btn-text">Finalizar Inscrição</span>
-                        <div class="btn-spinner" style="display: none;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 12a9 9 0 11-6.219-8.56"/>
-                            </svg>
-                        </div>
-                    </button>
-                </div>
             </form>
         </div>
     </main>
