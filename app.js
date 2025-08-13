@@ -1,18 +1,20 @@
 /**
  * CPM - Página de Inscrição
  * 
- * FUNCIONALIDADES IMPLEMENTADAS:
- * - Upload de imagem PNG/JPG/WebP
- * - Validação completa de formulário
- * - Geração automática de PDF
- * - Redirecionamento para WhatsApp
- * - Interface moderna e responsiva
+ * CONFIGURAÇÕES:
+ * - API_BASE: URL base da API (ajuste para seu backend)
+ * - MAX_FILE_SIZE: Tamanho máximo do arquivo (5MB)
+ * - ACCEPTED_TYPES: Tipos de arquivo aceitos
+ * 
+ * ENDPOINTS NECESSÁRIOS:
+ * - GET /api/seasons/current - Verificar período de inscrições
+ * - POST /api/teams - Enviar inscrição (multipart/form-data)
  */
 
 // Configurações
+const API_BASE = '/api'; // Ajuste para seu backend
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 const ACCEPTED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
-const WHATSAPP_NUMBER = '+5511986724226';
 
 // Elementos do DOM
 const logoInput = document.getElementById('logoInput');
@@ -33,12 +35,19 @@ const formError = document.getElementById('formError');
 
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
-const sendToWhatsApp = document.getElementById('sendToWhatsApp');
 
-// Dados da inscrição para PDF
-let inscriptionData = null;
+let currentSeason = null;
 
 // Helpers
+function formatDateBR(iso) {
+    try {
+        const d = new Date(iso);
+        return d.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+    } catch (e) {
+        return iso;
+    }
+}
+
 function showError(element, message) {
     element.textContent = message;
     element.style.display = 'flex';
@@ -56,6 +65,41 @@ function enableForm(enable) {
         }
     });
     chooseFile.disabled = !enable;
+}
+
+// Verificar período de inscrições
+async function checkSeason() {
+    try {
+        const res = await fetch(API_BASE + '/seasons/current');
+        
+        if (res.status === 200) {
+            const data = await res.json();
+            if (data) {
+                currentSeason = data;
+                enableForm(true);
+                return;
+            }
+        }
+        
+        // Caso 403/404 ou 200 com null
+        const body = await res.json().catch(() => null);
+        let msg = 'Inscrições estão fechadas';
+        if (body && body.nextOpen) {
+            msg += '. Próxima abertura: ' + formatDateBR(body.nextOpen);
+        }
+        showSeasonClosed(msg);
+    } catch (err) {
+        console.warn('Erro ao checar season', err);
+        showSeasonClosed('Não foi possível verificar período de inscrições. Tente novamente mais tarde.');
+    }
+}
+
+function showSeasonClosed(msg) {
+    enableForm(false);
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(msg + '\n\nInscrições geralmente abrem entre dia 1 às 18h e dia 5 às 18h (horário de Brasília).');
+    }, { once: true });
 }
 
 // Upload de arquivo
@@ -285,83 +329,6 @@ function validateForm() {
     return true;
 }
 
-// Geração de PDF
-function generatePDF(data) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Configurações
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 20;
-    const contentWidth = pageWidth - (margin * 2);
-    let yPosition = 30;
-    
-    // Título
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text('CPM - Inscrição de Time', pageWidth / 2, yPosition, { align: 'center' });
-    yPosition += 20;
-    
-    // Subtítulo
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Campeonato Paulista de MamoBall - Temporada 2025', pageWidth / 2, yPosition, { align: 'center' });
-    yPosition += 25;
-    
-    // Dados do clube
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Dados do Clube', margin, yPosition);
-    yPosition += 15;
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Nome: ${data.name}`, margin, yPosition);
-    yPosition += 10;
-    doc.text(`Dono: ${data.owner}`, margin, yPosition);
-    yPosition += 10;
-    doc.text(`Capitão: ${data.captain}`, margin, yPosition);
-    yPosition += 10;
-    
-    if (data.coach) {
-        doc.text(`Técnico: ${data.coach}`, margin, yPosition);
-        yPosition += 10;
-    }
-    
-    if (data.notes) {
-        doc.text(`Observações: ${data.notes}`, margin, yPosition);
-        yPosition += 15;
-    }
-    
-    // Jogadores
-    yPosition += 10;
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Jogadores', margin, yPosition);
-    yPosition += 15;
-    
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    
-    data.players.forEach((player, index) => {
-        if (yPosition > 250) {
-            doc.addPage();
-            yPosition = 30;
-        }
-        
-        doc.text(`${index + 1}. ID: ${player.id} | Nick: ${player.nick} | Posições: ${player.positions.join(', ')}`, margin, yPosition);
-        yPosition += 10;
-    });
-    
-    // Data e hora
-    yPosition += 15;
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
-    doc.text(`Inscrição realizada em: ${dateStr}`, margin, yPosition);
-    
-    return doc;
-}
-
 // Envio do formulário
 teamForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -381,19 +348,52 @@ teamForm.addEventListener('submit', async (e) => {
         return { id, nick, positions };
     });
     
-    // Preparar dados para PDF
-    inscriptionData = {
-        name: document.getElementById('clubName').value.trim(),
-        owner: document.getElementById('owner').value.trim(),
-        captain: document.getElementById('captain').value.trim(),
-        coach: document.getElementById('coach').value.trim(),
-        notes: document.getElementById('notes').value.trim(),
-        players: players,
-        logo: logoInput.files[0]
-    };
+    // Preparar FormData
+    const formData = new FormData();
+    formData.append('logo', logoInput.files[0]);
+    formData.append('name', document.getElementById('clubName').value.trim());
+    formData.append('owner', document.getElementById('owner').value.trim());
+    formData.append('captain', document.getElementById('captain').value.trim());
+    formData.append('coach', document.getElementById('coach').value.trim());
+    formData.append('players', JSON.stringify(players));
     
-    // Mostrar modal de sucesso
-    openModal('Inscrição finalizada!', 'Seus dados foram processados com sucesso! Um PDF foi gerado e você será redirecionado para o WhatsApp para enviar a inscrição.');
+    if (currentSeason && currentSeason._id) {
+        formData.append('seasonId', currentSeason._id);
+    }
+    
+    // Enviar
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnSpinner = submitBtn.querySelector('.btn-spinner');
+    
+    submitBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnSpinner.style.display = 'block';
+    
+    try {
+        const res = await fetch(API_BASE + '/teams', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const body = await res.json().catch(() => null);
+        
+        if (res.status === 201) {
+            openModal('Inscrição enviada!', 'Seus dados foram recebidos e estão sendo analisados. Você receberá um e-mail com mais informações em breve.');
+        } else if (res.status === 403) {
+            const msg = (body && body.message) ? body.message : 'Inscrições fechadas.';
+            alert(msg + '\n\n' + (body && body.nextOpen ? ('Próxima abertura: ' + formatDateBR(body.nextOpen)) : ''));
+        } else {
+            const msg = (body && body.message) ? body.message : ('Erro: ' + res.status);
+            showError(formError, msg);
+        }
+    } catch (err) {
+        console.error(err);
+        showError(formError, 'Erro ao enviar. Conecte-se à internet e tente novamente.');
+    } finally {
+        submitBtn.disabled = false;
+        btnText.style.display = 'block';
+        btnSpinner.style.display = 'none';
+    }
 });
 
 // Modal
@@ -411,64 +411,6 @@ function closeModalFn() {
 
 closeModal.addEventListener('click', closeModalFn);
 
-// Enviar para WhatsApp
-sendToWhatsApp.addEventListener('click', async () => {
-    if (!inscriptionData) {
-        alert('Erro: dados da inscrição não encontrados.');
-        return;
-    }
-    
-    try {
-        // Gerar PDF
-        const doc = generatePDF(inscriptionData);
-        
-        // Converter PDF para blob
-        const pdfBlob = doc.output('blob');
-        
-        // Criar URL do blob
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        
-        // Preparar mensagem para WhatsApp
-        const message = `Olá! Gostaria de inscrever meu time "${inscriptionData.name}" no CPM - Campeonato Paulista de MamoBall.
-
-Dados do time:
-• Nome: ${inscriptionData.name}
-• Dono: ${inscriptionData.owner}
-• Capitão: ${inscriptionData.captain}
-${inscriptionData.coach ? `• Técnico: ${inscriptionData.coach}` : ''}
-• Jogadores: ${inscriptionData.players.length}
-
-Segue o PDF com todos os detalhes da inscrição.`;
-
-        // Codificar mensagem para URL
-        const encodedMessage = encodeURIComponent(message);
-        
-        // Redirecionar para WhatsApp
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
-        
-        // Fechar modal
-        closeModalFn();
-        
-        // Limpar formulário
-        teamForm.reset();
-        logoInput.value = '';
-        uploadContent.style.display = 'flex';
-        uploadPreview.style.display = 'none';
-        playersEl.innerHTML = '';
-        for (let i = 0; i < 6; i++) {
-            addPlayer();
-        }
-        
-        // Limpar dados
-        inscriptionData = null;
-        
-    } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
-        alert('Erro ao gerar PDF. Tente novamente.');
-    }
-});
-
 // Fechar modal ao clicar no backdrop
 modal.addEventListener('click', (e) => {
     if (e.target === modal) {
@@ -484,6 +426,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Inicialização
-(function init() {
-    enableForm(true);
+(async function init() {
+    // Desabilitar formulário até verificar período
+    enableForm(false);
+    await checkSeason();
 })();
