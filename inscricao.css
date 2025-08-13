@@ -1,9 +1,12 @@
 /* Estilos específicos para a página de inscrição */
 
+/* Header da página de inscrição - Estilos já definidos no styles.css */
+
+/* Main da inscrição */
 .inscription-main {
-    padding-top: 120px;
+    padding: 8rem 0 4rem;
+    background: var(--bg-secondary);
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 }
 
 .inscription-header {
@@ -17,28 +20,36 @@
     gap: 0.5rem;
     background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 0.625rem 1.25rem;
     border-radius: var(--radius-lg);
-    font-weight: 600;
     font-size: 0.875rem;
+    font-weight: 500;
     margin-bottom: 1.5rem;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
 }
 
-.inscription-badge svg {
-    width: 20px;
-    height: 20px;
+.inscription-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.inscription-badge:hover::before {
+    left: 100%;
 }
 
 .inscription-title {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    color: var(--text-primary);
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
 }
 
 .inscription-subtitle {
@@ -51,13 +62,8 @@
 
 /* Formulário */
 .inscription-form {
-    background: var(--bg-primary);
-    border-radius: var(--radius-lg);
-    padding: 2.5rem;
-    box-shadow: var(--shadow-xl);
-    border: 1px solid var(--border-light);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .form-grid {
@@ -68,8 +74,11 @@
 }
 
 .form-section {
-    display: flex;
-    flex-direction: column;
+    background: var(--bg-primary);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-light);
 }
 
 .section-header {
@@ -77,21 +86,10 @@
 }
 
 .section-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: var(--text-primary);
     margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.section-header h2::before {
-    content: '';
-    width: 4px;
-    height: 24px;
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
-    border-radius: 2px;
+    color: var(--text-primary);
 }
 
 .section-header p {
@@ -99,92 +97,97 @@
     font-size: 0.875rem;
 }
 
-/* Upload de arquivo */
+/* Upload Area */
 .upload-area {
+    position: relative;
+}
+
+.upload-content {
     border: 2px dashed var(--border);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 3rem 2rem;
     text-align: center;
     transition: all 0.3s ease;
     background: var(--bg-secondary);
 }
 
-.upload-area:hover {
+.upload-content:hover {
     border-color: var(--secondary);
     background: var(--bg-primary);
 }
 
-.upload-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
 .upload-icon {
     color: var(--text-muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .upload-text h3 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: var(--text-primary);
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
 }
 
 .upload-text p {
     color: var(--text-secondary);
     font-size: 0.875rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .upload-btn {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    background: var(--primary);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius);
+    font-family: inherit;
     font-weight: 500;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow);
 }
 
 .upload-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    background: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
+/* Preview da imagem */
 .upload-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    background: var(--bg-primary);
 }
 
 .preview-image {
+    width: 100%;
     max-width: 200px;
-    max-height: 200px;
+    height: 200px;
+    object-fit: contain;
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 3px solid var(--border-light);
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-light);
+    background: var(--bg-secondary);
 }
 
 .preview-actions {
     display: flex;
     gap: 0.75rem;
+    justify-content: center;
 }
 
 .preview-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     border: 1px solid var(--border);
-    border-radius: var(--radius);
     background: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--text-secondary);
+    border-radius: var(--radius);
+    font-family: inherit;
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -192,7 +195,7 @@
 
 .preview-btn:hover {
     background: var(--bg-secondary);
-    border-color: var(--secondary);
+    color: var(--text-primary);
 }
 
 .preview-btn.danger:hover {
@@ -201,7 +204,7 @@
     border-color: var(--danger);
 }
 
-/* Campos do formulário */
+/* Form Groups */
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -209,8 +212,8 @@
 .form-label {
     display: block;
     font-weight: 500;
-    color: var(--text-primary);
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
     font-size: 0.875rem;
 }
 
@@ -226,27 +229,33 @@
 .form-input,
 .form-textarea {
     width: 100%;
-    padding: 0.875rem 1rem;
-    border: 2px solid var(--border);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
     border-radius: var(--radius);
+    background: var(--bg-primary);
+    font-family: inherit;
     font-size: 0.875rem;
     transition: all 0.3s ease;
-    background: var(--bg-primary);
-    color: var(--text-primary);
 }
 
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
     border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-muted);
 }
 
 .form-textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
 }
 
+/* Admin Grid */
 .admin-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -257,9 +266,9 @@
     grid-column: 1 / -1;
 }
 
-/* Seção de jogadores */
+/* Seção de Jogadores */
 .players-section {
-    margin-top: 2rem;
+    grid-column: 1 / -1;
 }
 
 .section-title-group {
@@ -270,40 +279,36 @@
 }
 
 .players-counter {
-    background: var(--accent);
+    background: var(--secondary);
     color: white;
     padding: 0.25rem 0.75rem;
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     font-size: 0.75rem;
     font-weight: 600;
 }
 
 .players-container {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    border: 1px solid var(--border-light);
+    margin-top: 1.5rem;
 }
 
 .players-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .player-card {
-    background: var(--bg-primary);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius);
     padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
 }
 
 .player-card:hover {
-    box-shadow: var(--shadow);
-    border-color: var(--secondary);
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
 }
 
 .player-header {
@@ -314,24 +319,24 @@
 }
 
 .player-number {
-    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    background: var(--primary);
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.75rem;
     font-weight: 600;
-    font-size: 0.875rem;
 }
 
 .remove-player-btn {
     background: none;
     border: none;
-    color: var(--text-muted);
+    color: var(--danger);
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.25rem;
     border-radius: var(--radius-sm);
     transition: all 0.3s ease;
 }
@@ -358,17 +363,6 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    cursor: pointer;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--bg-primary);
-    transition: all 0.3s ease;
-}
-
-.position-checkbox:hover {
-    border-color: var(--secondary);
-    background: var(--bg-secondary);
 }
 
 .position-checkbox input[type="checkbox"] {
@@ -377,38 +371,45 @@
     accent-color: var(--secondary);
 }
 
+.position-checkbox label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
 .players-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .add-player-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
+    background: var(--secondary);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius);
+    font-family: inherit;
     font-weight: 500;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow);
 }
 
-.add-player-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+.add-player-btn:hover:not(:disabled) {
+    background: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
 .add-player-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none;
 }
 
 .players-hint {
@@ -427,19 +428,18 @@
 }
 
 .error-message::before {
-    content: '⚠️';
+    content: "⚠";
     font-size: 1rem;
 }
 
 .form-error {
     background: rgba(239, 68, 68, 0.1);
-    border: 1px solid var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
     color: var(--danger);
     padding: 1rem;
     border-radius: var(--radius);
     margin-bottom: 1.5rem;
-    text-align: center;
-    font-weight: 500;
+    font-size: 0.875rem;
 }
 
 /* Ações do formulário */
@@ -448,14 +448,15 @@
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-light);
-    flex-wrap: wrap;
+    padding: 2rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-light);
 }
 
 .form-info {
     flex: 1;
-    min-width: 300px;
 }
 
 .form-info p {
@@ -476,26 +477,27 @@
 }
 
 .submit-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: var(--primary);
     color: white;
     border: none;
     padding: 1rem 2rem;
     border-radius: var(--radius);
+    font-family: inherit;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-lg);
-    min-width: 200px;
+    min-width: 180px;
     justify-content: center;
 }
 
-.submit-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-xl);
+.submit-btn:hover:not(:disabled) {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .submit-btn:disabled {
@@ -509,8 +511,9 @@
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Modal */
@@ -520,18 +523,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2000;
-    display: flex;
+    z-index: 1000;
+    display: none;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+    padding: 1rem;
 }
 
 .modal.show {
-    opacity: 1;
-    visibility: visible;
+    display: flex;
 }
 
 .modal-backdrop {
@@ -542,45 +542,38 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
     background: var(--bg-primary);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    box-shadow: var(--shadow-xl);
     max-width: 500px;
-    width: 90%;
+    width: 100%;
     position: relative;
     z-index: 1;
-    box-shadow: var(--shadow-xl);
-    border: 1px solid var(--border-light);
-    transform: scale(0.9);
-    transition: all 0.3s ease;
-}
-
-.modal.show .modal-content {
-    transform: scale(1);
+    overflow: hidden;
 }
 
 .modal-header {
+    padding: 2rem 2rem 1rem;
     text-align: center;
-    margin-bottom: 1.5rem;
 }
 
 .modal-icon {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1rem;
+    font-size: 1.5rem;
 }
 
 .modal-icon.success {
-    background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
-    color: white;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
 }
 
 .modal-title {
@@ -590,72 +583,61 @@
     margin-bottom: 0.5rem;
 }
 
+.modal-body {
+    padding: 0 2rem 2rem;
+}
+
 .modal-message {
     color: var(--text-secondary);
-    text-align: center;
     line-height: 1.6;
-    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .modal-actions {
     display: flex;
     gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: 1.5rem 2rem 2rem;
+    border-top: 1px solid var(--border-light);
 }
 
 .modal-btn {
+    flex: 1;
     padding: 0.75rem 1.5rem;
-    border: none;
     border-radius: var(--radius);
+    font-family: inherit;
     font-weight: 500;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-content: center;
-    min-width: 160px;
-}
-
-.modal-btn.primary {
-    background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
-    color: white;
-    box-shadow: var(--shadow);
-}
-
-.modal-btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.modal-btn.secondary {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
+    text-align: center;
     border: 1px solid var(--border);
 }
 
-.modal-btn.secondary:hover {
-    background: var(--bg-tertiary);
-    border-color: var(--secondary);
+.modal-btn.primary {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .inscription-main {
-        padding-top: 100px;
-    }
-    
-    .inscription-title {
-        font-size: 2rem;
-    }
-    
-    .inscription-form {
-        padding: 1.5rem;
-        margin: 0 1rem;
-    }
-    
+.modal-btn.primary:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.modal-btn.secondary {
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+}
+
+.modal-btn.secondary:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
     .form-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -668,20 +650,33 @@
     .player-fields {
         grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 768px) {
+    .inscription-main {
+        padding: 6rem 0 3rem;
+    }
+    
+    .inscription-title {
+        font-size: 2rem;
+    }
+    
+    .form-section {
+        padding: 1.5rem;
+    }
+    
+    .upload-content {
+        padding: 2rem 1rem;
+    }
     
     .form-actions {
         flex-direction: column;
-        align-items: stretch;
-        gap: 1rem;
+        gap: 1.5rem;
+        text-align: center;
     }
     
     .submit-btn {
         width: 100%;
-    }
-    
-    .modal-content {
-        margin: 1rem;
-        padding: 1.5rem;
     }
     
     .modal-actions {
@@ -694,20 +689,38 @@
 }
 
 @media (max-width: 480px) {
-    .inscription-form {
+    .inscription-title {
+        font-size: 1.75rem;
+    }
+    
+    .inscription-subtitle {
+        font-size: 1rem;
+    }
+    
+    .form-section {
         padding: 1rem;
-        margin: 0 0.5rem;
     }
     
-    .upload-area {
-        padding: 1.5rem;
+    .upload-content {
+        padding: 1.5rem 1rem;
     }
     
-    .players-container {
-        padding: 1.5rem;
+    .preview-actions {
+        flex-direction: column;
     }
     
-    .player-card {
-        padding: 1rem;
+    .preview-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .players-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .add-player-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
