@@ -53,42 +53,90 @@ const prevStep2 = document.getElementById('prevStep2');
 const prevStep3 = document.getElementById('prevStep3');
 const prevStep4 = document.getElementById('prevStep4');
 
+// Debug: verificar se todos os elementos foram encontrados
+console.log('Elementos encontrados:', {
+    logoInput: !!logoInput,
+    logoPreview: !!logoPreview,
+    chooseFile: !!chooseFile,
+    changeFile: !!changeFile,
+    removeFile: !!removeFile,
+    logoError: !!logoError,
+    uploadContent: !!uploadContent,
+    uploadPreview: !!uploadPreview,
+    teamForm: !!teamForm,
+    playersEl: !!playersEl,
+    addPlayerBtn: !!addPlayerBtn,
+    playersCounter: !!playersCounter,
+    submitBtn: !!submitBtn,
+    formError: !!formError,
+    modal: !!modal,
+    closeModal: !!closeModal,
+    sendToWhatsApp: !!sendToWhatsApp,
+    progressFill: !!progressFill,
+    steps: steps.length,
+    nextStep1: !!nextStep1,
+    nextStep2: !!nextStep2,
+    nextStep3: !!nextStep3,
+    prevStep2: !!prevStep2,
+    prevStep3: !!prevStep3,
+    prevStep4: !!prevStep4
+});
+
 // Helpers
 function showError(element, message) {
-    element.textContent = message;
-    element.style.display = 'flex';
+    if (element) {
+        element.textContent = message;
+        element.style.display = 'flex';
+    }
 }
 
 function hideError(element) {
-    element.style.display = 'none';
+    if (element) {
+        element.style.display = 'none';
+    }
 }
 
 function updateProgress() {
-    const progress = (currentStep / totalSteps) * 100;
-    progressFill.style.width = `${progress}%`;
+    if (progressFill) {
+        const progress = (currentStep / totalSteps) * 100;
+        progressFill.style.width = `${progress}%`;
+        console.log('Progresso atualizado:', progress + '%');
+    }
 }
 
 function updateSteps() {
-    steps.forEach((step, index) => {
-        const stepNum = index + 1;
-        step.classList.remove('active', 'completed');
-        
-        if (stepNum === currentStep) {
-            step.classList.add('active');
-        } else if (stepNum < currentStep) {
-            step.classList.add('completed');
-        }
-    });
+    if (steps && steps.length > 0) {
+        steps.forEach((step, index) => {
+            const stepNum = index + 1;
+            step.classList.remove('active', 'completed');
+            
+            if (stepNum === currentStep) {
+                step.classList.add('active');
+            } else if (stepNum < currentStep) {
+                step.classList.add('completed');
+            }
+        });
+        console.log('Etapas atualizadas, etapa atual:', currentStep);
+    }
 }
 
 function showStep(stepNumber) {
+    console.log('Mostrando etapa:', stepNumber);
+    
     // Esconder todas as etapas
-    document.querySelectorAll('.form-step').forEach(step => {
+    const allSteps = document.querySelectorAll('.form-step');
+    allSteps.forEach(step => {
         step.classList.remove('active');
     });
     
     // Mostrar etapa atual
-    document.getElementById(`step${stepNumber}`).classList.add('active');
+    const currentStepEl = document.getElementById(`step${stepNumber}`);
+    if (currentStepEl) {
+        currentStepEl.classList.add('active');
+        console.log('Etapa', stepNumber, 'ativada');
+    } else {
+        console.error('Etapa', stepNumber, 'não encontrada');
+    }
     
     // Atualizar estado
     currentStep = stepNumber;
@@ -97,6 +145,8 @@ function showStep(stepNumber) {
 }
 
 function validateStep(stepNumber) {
+    console.log('Validando etapa:', stepNumber);
+    
     switch (stepNumber) {
         case 1:
             return validateLogo();
@@ -110,7 +160,7 @@ function validateStep(stepNumber) {
 }
 
 function validateLogo() {
-    if (!logoInput.files[0]) {
+    if (!logoInput || !logoInput.files[0]) {
         showError(logoError, 'A logo do clube é obrigatória.');
         return false;
     }
@@ -133,9 +183,9 @@ function validateLogo() {
 function validateClubData() {
     let isValid = true;
     
-    const name = document.getElementById('clubName').value.trim();
-    const owner = document.getElementById('owner').value.trim();
-    const captain = document.getElementById('captain').value.trim();
+    const name = document.getElementById('clubName')?.value?.trim();
+    const owner = document.getElementById('owner')?.value?.trim();
+    const captain = document.getElementById('captain')?.value?.trim();
     
     if (!name) {
         showError(document.getElementById('clubNameError'), 'Nome do clube é obrigatório');
@@ -162,6 +212,8 @@ function validateClubData() {
 }
 
 function validatePlayers() {
+    if (!playersEl) return false;
+    
     const count = playersEl.children.length;
     if (count < 6 || count > 10) {
         return false;
@@ -169,8 +221,8 @@ function validatePlayers() {
     
     for (const card of playersEl.children) {
         const inputs = card.querySelectorAll('input[type="text"]');
-        const id = inputs[0].value.trim();
-        const nick = inputs[1].value.trim();
+        const id = inputs[0]?.value?.trim();
+        const nick = inputs[1]?.value?.trim();
         const checkboxes = card.querySelectorAll('input[type="checkbox"]');
         const anyPos = Array.from(checkboxes).some(cb => cb.checked);
         
@@ -183,17 +235,25 @@ function validatePlayers() {
 }
 
 // Upload de arquivo
-chooseFile.addEventListener('click', () => logoInput.click());
-changeFile.addEventListener('click', () => logoInput.click());
-logoInput.addEventListener('change', handleFileSelect);
+if (chooseFile) {
+    chooseFile.addEventListener('click', () => logoInput?.click());
+}
+if (changeFile) {
+    changeFile.addEventListener('click', () => logoInput?.click());
+}
+if (logoInput) {
+    logoInput.addEventListener('change', handleFileSelect);
+}
 
-removeFile.addEventListener('click', () => {
-    logoInput.value = '';
-    uploadContent.style.display = 'flex';
-    uploadPreview.style.display = 'none';
-    hideError(logoError);
-    nextStep1.disabled = true;
-});
+if (removeFile) {
+    removeFile.addEventListener('click', () => {
+        if (logoInput) logoInput.value = '';
+        if (uploadContent) uploadContent.style.display = 'flex';
+        if (uploadPreview) uploadPreview.style.display = 'none';
+        hideError(logoError);
+        if (nextStep1) nextStep1.disabled = true;
+    });
+}
 
 function handleFileSelect(e) {
     const file = e.target.files[0];
@@ -202,93 +262,117 @@ function handleFileSelect(e) {
     if (!ACCEPTED_TYPES.includes(file.type)) {
         showError(logoError, 'Tipo de arquivo inválido. Use PNG, JPG ou WebP.');
         logoInput.value = '';
-        nextStep1.disabled = true;
+        if (nextStep1) nextStep1.disabled = true;
         return;
     }
     
     if (file.size > MAX_FILE_SIZE) {
         showError(logoError, 'Arquivo muito grande. Máximo 5MB.');
         logoInput.value = '';
-        nextStep1.disabled = true;
+        if (nextStep1) nextStep1.disabled = true;
         return;
     }
     
     hideError(logoError);
-    nextStep1.disabled = false;
+    if (nextStep1) nextStep1.disabled = false;
     
     const reader = new FileReader();
     reader.onload = (ev) => {
-        logoPreview.src = ev.target.result;
-        uploadContent.style.display = 'none';
-        uploadPreview.style.display = 'block';
+        if (logoPreview) logoPreview.src = ev.target.result;
+        if (uploadContent) uploadContent.style.display = 'none';
+        if (uploadPreview) uploadPreview.style.display = 'block';
     };
     reader.readAsDataURL(file);
 }
 
 // Drag and drop
-uploadContent.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadContent.style.borderColor = 'var(--secondary)';
-    uploadContent.style.background = 'var(--bg-primary)';
-});
+if (uploadContent) {
+    uploadContent.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadContent.style.borderColor = '#2563eb';
+        uploadContent.style.background = '#ffffff';
+    });
 
-uploadContent.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    uploadContent.style.borderColor = 'var(--border)';
-    uploadContent.style.background = 'var(--bg-secondary)';
-});
+    uploadContent.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadContent.style.borderColor = '#e5e7eb';
+        uploadContent.style.background = '#f9fafb';
+    });
 
-uploadContent.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadContent.style.borderColor = 'var(--border)';
-    uploadContent.style.background = 'var(--bg-secondary)';
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        logoInput.files = files;
-        handleFileSelect({ target: { files } });
-    }
-});
+    uploadContent.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadContent.style.borderColor = '#e5e7eb';
+        uploadContent.style.background = '#f9fafb';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            if (logoInput) logoInput.files = files;
+            handleFileSelect({ target: { files } });
+        }
+    });
+}
 
 // Navegação entre etapas
-nextStep1.addEventListener('click', () => {
-    if (validateStep(1)) {
-        showStep(2);
-    }
-});
+if (nextStep1) {
+    nextStep1.addEventListener('click', () => {
+        if (validateStep(1)) {
+            showStep(2);
+        }
+    });
+}
 
-nextStep2.addEventListener('click', () => {
-    if (validateStep(2)) {
-        showStep(3);
-    }
-});
+if (nextStep2) {
+    nextStep2.addEventListener('click', () => {
+        if (validateStep(2)) {
+            showStep(3);
+        }
+    });
+}
 
-nextStep3.addEventListener('click', () => {
-    if (validateStep(3)) {
-        showStep(4);
-        populateReview();
-    }
-});
+if (nextStep3) {
+    nextStep3.addEventListener('click', () => {
+        if (validateStep(3)) {
+            showStep(4);
+            populateReview();
+        }
+    });
+}
 
-prevStep2.addEventListener('click', () => showStep(1));
-prevStep3.addEventListener('click', () => showStep(2));
-prevStep4.addEventListener('click', () => showStep(3));
+if (prevStep2) {
+    prevStep2.addEventListener('click', () => showStep(1));
+}
+if (prevStep3) {
+    prevStep3.addEventListener('click', () => showStep(2));
+}
+if (prevStep4) {
+    prevStep4.addEventListener('click', () => showStep(3));
+}
 
 // Validação em tempo real para etapa 2
-document.getElementById('clubName').addEventListener('input', () => {
-    const isValid = validateClubData();
-    nextStep2.disabled = !isValid;
-});
+const clubNameEl = document.getElementById('clubName');
+const ownerEl = document.getElementById('owner');
+const captainEl = document.getElementById('captain');
 
-document.getElementById('owner').addEventListener('input', () => {
-    const isValid = validateClubData();
-    nextStep2.disabled = !isValid;
-});
+if (clubNameEl) {
+    clubNameEl.addEventListener('input', () => {
+        const isValid = validateClubData();
+        if (nextStep2) nextStep2.disabled = !isValid;
+    });
+}
 
-document.getElementById('captain').addEventListener('input', () => {
-    const isValid = validateClubData();
-    nextStep2.disabled = !isValid;
-});
+if (ownerEl) {
+    ownerEl.addEventListener('input', () => {
+        const isValid = validateClubData();
+        if (nextStep2) nextStep2.disabled = !isValid;
+    });
+}
+
+if (captainEl) {
+    captainEl.addEventListener('input', () => {
+        const isValid = validateClubData();
+        if (nextStep2) nextStep2.disabled = !isValid;
+    });
+}
 
 // Gerenciamento de jogadores
 function createPlayerCard(index, data = { id: '', nick: '', positions: [] }) {
@@ -337,7 +421,9 @@ function createPlayerCard(index, data = { id: '', nick: '', positions: [] }) {
     
     // Adicionar evento de remoção
     const removeBtn = card.querySelector('.remove-player-btn');
-    removeBtn.addEventListener('click', () => removePlayer(card));
+    if (removeBtn) {
+        removeBtn.addEventListener('click', () => removePlayer(card));
+    }
     
     // Adicionar validação em tempo real
     const inputs = card.querySelectorAll('input[type="text"]');
@@ -356,17 +442,21 @@ function createPlayerCard(index, data = { id: '', nick: '', positions: [] }) {
 
 function validatePlayersStep() {
     const isValid = validatePlayers();
-    nextStep3.disabled = !isValid;
+    if (nextStep3) nextStep3.disabled = !isValid;
 }
 
 function updatePlayersCount() {
-    const count = playersEl.children.length;
-    playersCounter.textContent = `${count} de 10`;
-    addPlayerBtn.disabled = count >= 10;
-    validatePlayersStep();
+    if (playersCounter && playersEl) {
+        const count = playersEl.children.length;
+        playersCounter.textContent = `${count} de 10`;
+        if (addPlayerBtn) addPlayerBtn.disabled = count >= 10;
+        validatePlayersStep();
+    }
 }
 
 function addPlayer(data) {
+    if (!playersEl) return;
+    
     const count = playersEl.children.length;
     if (count >= 10) return;
     
@@ -376,6 +466,8 @@ function addPlayer(data) {
 }
 
 function removePlayer(card) {
+    if (!playersEl) return;
+    
     const count = playersEl.children.length;
     if (count <= 6) {
         alert('É necessário ao menos 6 jogadores.');
@@ -387,64 +479,98 @@ function removePlayer(card) {
     // Reindexar
     Array.from(playersEl.children).forEach((child, i) => {
         child.dataset.index = i;
-        child.querySelector('.player-number').textContent = i + 1;
+        const numberEl = child.querySelector('.player-number');
+        if (numberEl) numberEl.textContent = i + 1;
     });
     
     updatePlayersCount();
 }
 
-addPlayerBtn.addEventListener('click', () => addPlayer());
+if (addPlayerBtn) {
+    addPlayerBtn.addEventListener('click', () => addPlayer());
+}
 
 // Inicializar com 6 jogadores vazios
-for (let i = 0; i < 6; i++) {
-    addPlayer();
+if (playersEl) {
+    for (let i = 0; i < 6; i++) {
+        addPlayer();
+    }
 }
 
 // Populate review
 function populateReview() {
+    console.log('Populando revisão...');
+    
     // Logo
-    document.getElementById('reviewLogo').src = logoPreview.src;
-    
-    // Dados do clube
-    document.getElementById('reviewName').textContent = document.getElementById('clubName').value.trim();
-    document.getElementById('reviewOwner').textContent = document.getElementById('owner').value.trim();
-    document.getElementById('reviewCaptain').textContent = document.getElementById('captain').value.trim();
-    
-    const coach = document.getElementById('coach').value.trim();
-    if (coach) {
-        document.getElementById('reviewCoach').textContent = coach;
-        document.getElementById('reviewCoachItem').style.display = 'flex';
+    const reviewLogoEl = document.getElementById('reviewLogo');
+    if (reviewLogoEl && logoPreview) {
+        reviewLogoEl.src = logoPreview.src;
     }
     
-    const notes = document.getElementById('notes').value.trim();
-    if (notes) {
-        document.getElementById('reviewNotes').textContent = notes;
-        document.getElementById('reviewNotesItem').style.display = 'flex';
+    // Dados do clube
+    const reviewNameEl = document.getElementById('reviewName');
+    const reviewOwnerEl = document.getElementById('reviewOwner');
+    const reviewCaptainEl = document.getElementById('reviewCaptain');
+    
+    if (reviewNameEl && clubNameEl) {
+        reviewNameEl.textContent = clubNameEl.value.trim();
+    }
+    if (reviewOwnerEl && ownerEl) {
+        reviewOwnerEl.textContent = ownerEl.value.trim();
+    }
+    if (reviewCaptainEl && captainEl) {
+        reviewCaptainEl.textContent = captainEl.value.trim();
+    }
+    
+    const coachEl = document.getElementById('coach');
+    const reviewCoachEl = document.getElementById('reviewCoach');
+    const reviewCoachItemEl = document.getElementById('reviewCoachItem');
+    
+    if (coachEl && reviewCoachEl && reviewCoachItemEl) {
+        const coach = coachEl.value.trim();
+        if (coach) {
+            reviewCoachEl.textContent = coach;
+            reviewCoachItemEl.style.display = 'flex';
+        }
+    }
+    
+    const notesEl = document.getElementById('notes');
+    const reviewNotesEl = document.getElementById('reviewNotes');
+    const reviewNotesItemEl = document.getElementById('reviewNotesItem');
+    
+    if (notesEl && reviewNotesEl && reviewNotesItemEl) {
+        const notes = notesEl.value.trim();
+        if (notes) {
+            reviewNotesEl.textContent = notes;
+            reviewNotesItemEl.style.display = 'flex';
+        }
     }
     
     // Jogadores
-    const reviewPlayers = document.getElementById('reviewPlayers');
-    reviewPlayers.innerHTML = '';
-    
-    Array.from(playersEl.children).forEach((card, index) => {
-        const inputs = card.querySelectorAll('input[type="text"]');
-        const id = inputs[0].value.trim();
-        const nick = inputs[1].value.trim();
-        const positions = Array.from(card.querySelectorAll('input[type="checkbox"]'))
-            .filter(cb => cb.checked)
-            .map(cb => cb.value);
+    const reviewPlayersEl = document.getElementById('reviewPlayers');
+    if (reviewPlayersEl && playersEl) {
+        reviewPlayersEl.innerHTML = '';
         
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'review-player';
-        playerDiv.innerHTML = `
-            <div class="review-player-info">
-                <div class="review-player-name">${index + 1}. ${nick} (ID: ${id})</div>
-                <div class="review-player-positions">Posições: ${positions.join(', ')}</div>
-            </div>
-        `;
-        
-        reviewPlayers.appendChild(playerDiv);
-    });
+        Array.from(playersEl.children).forEach((card, index) => {
+            const inputs = card.querySelectorAll('input[type="text"]');
+            const id = inputs[0]?.value?.trim() || '';
+            const nick = inputs[1]?.value?.trim() || '';
+            const positions = Array.from(card.querySelectorAll('input[type="checkbox"]'))
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'review-player';
+            playerDiv.innerHTML = `
+                <div class="review-player-info">
+                    <div class="review-player-name">${index + 1}. ${nick} (ID: ${id})</div>
+                    <div class="review-player-positions">Posições: ${positions.join(', ')}</div>
+                </div>
+            `;
+            
+            reviewPlayersEl.appendChild(playerDiv);
+        });
+    }
 }
 
 // Geração de PDF com logo
@@ -547,123 +673,149 @@ function getLogoDataUrl(file) {
 }
 
 // Envio do formulário
-teamForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    hideError(formError);
-    
-    if (!validateStep(4)) return;
-    
-    // Construir array de jogadores
-    const players = Array.from(playersEl.children).map(card => {
-        const inputs = card.querySelectorAll('input[type="text"]');
-        const id = inputs[0].value.trim();
-        const nick = inputs[1].value.trim();
-        const positions = Array.from(card.querySelectorAll('input[type="checkbox"]'))
-            .filter(cb => cb.checked)
-            .map(cb => cb.value);
+if (teamForm) {
+    teamForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideError(formError);
         
-        return { id, nick, positions };
+        if (!validateStep(4)) return;
+        
+        // Construir array de jogadores
+        const players = [];
+        if (playersEl) {
+            Array.from(playersEl.children).forEach(card => {
+                const inputs = card.querySelectorAll('input[type="text"]');
+                const id = inputs[0]?.value?.trim() || '';
+                const nick = inputs[1]?.value?.trim() || '';
+                const positions = Array.from(card.querySelectorAll('input[type="checkbox"]'))
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+                
+                players.push({ id, nick, positions });
+            });
+        }
+        
+        // Preparar dados para PDF
+        inscriptionData = {
+            name: clubNameEl?.value?.trim() || '',
+            owner: ownerEl?.value?.trim() || '',
+            captain: captainEl?.value?.trim() || '',
+            coach: document.getElementById('coach')?.value?.trim() || '',
+            notes: document.getElementById('notes')?.value?.trim() || '',
+            players: players,
+            logo: logoInput?.files[0]
+        };
+        
+        // Mostrar modal de sucesso
+        openModal('Inscrição finalizada!', 'Seus dados foram processados com sucesso! Um PDF foi gerado e você será redirecionado para o WhatsApp para enviar a inscrição.');
     });
-    
-    // Preparar dados para PDF
-    inscriptionData = {
-        name: document.getElementById('clubName').value.trim(),
-        owner: document.getElementById('owner').value.trim(),
-        captain: document.getElementById('captain').value.trim(),
-        coach: document.getElementById('coach').value.trim(),
-        notes: document.getElementById('notes').value.trim(),
-        players: players,
-        logo: logoInput.files[0]
-    };
-    
-    // Mostrar modal de sucesso
-    openModal('Inscrição finalizada!', 'Seus dados foram processados com sucesso! Um PDF foi gerado e você será redirecionado para o WhatsApp para enviar a inscrição.');
-});
+}
 
 // Modal
 function openModal(title, message) {
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalMsg').textContent = message;
-    modal.classList.add('show');
-    modal.setAttribute('aria-hidden', 'false');
+    const modalTitleEl = document.getElementById('modalTitle');
+    const modalMsgEl = document.getElementById('modalMsg');
+    
+    if (modalTitleEl) modalTitleEl.textContent = title;
+    if (modalMsgEl) modalMsgEl.textContent = message;
+    if (modal) {
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+    }
 }
 
 function closeModalFn() {
-    modal.classList.remove('show');
-    modal.setAttribute('aria-hidden', 'true');
+    if (modal) {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+    }
 }
 
-closeModal.addEventListener('click', closeModalFn);
+if (closeModal) {
+    closeModal.addEventListener('click', closeModalFn);
+}
 
 // Enviar para WhatsApp
-sendToWhatsApp.addEventListener('click', async () => {
-    if (!inscriptionData) {
-        alert('Erro: dados da inscrição não encontrados.');
-        return;
-    }
-    
-    try {
-        // Gerar PDF
-        const doc = await generatePDF(inscriptionData);
-        
-        // Converter PDF para blob
-        const pdfBlob = doc.output('blob');
-        
-        // Criar URL do blob
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        
-        // Preparar mensagem para WhatsApp (simplificada)
-        const message = `Quero inscrever meu time "${inscriptionData.name}" na CPM.`;
-        
-        // Codificar mensagem para URL
-        const encodedMessage = encodeURIComponent(message);
-        
-        // Redirecionar para WhatsApp
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
-        
-        // Fechar modal
-        closeModalFn();
-        
-        // Limpar formulário
-        teamForm.reset();
-        logoInput.value = '';
-        uploadContent.style.display = 'flex';
-        uploadPreview.style.display = 'none';
-        playersEl.innerHTML = '';
-        for (let i = 0; i < 6; i++) {
-            addPlayer();
+if (sendToWhatsApp) {
+    sendToWhatsApp.addEventListener('click', async () => {
+        if (!inscriptionData) {
+            alert('Erro: dados da inscrição não encontrados.');
+            return;
         }
         
-        // Limpar dados
-        inscriptionData = null;
-        
-        // Voltar para primeira etapa
-        showStep(1);
-        
-    } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
-        alert('Erro ao gerar PDF. Tente novamente.');
-    }
-});
+        try {
+            // Gerar PDF
+            const doc = await generatePDF(inscriptionData);
+            
+            // Converter PDF para blob
+            const pdfBlob = doc.output('blob');
+            
+            // Criar URL do blob
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            
+            // Preparar mensagem para WhatsApp (simplificada)
+            const message = `Quero inscrever meu time "${inscriptionData.name}" na CPM.`;
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Redirecionar para WhatsApp
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Fechar modal
+            closeModalFn();
+            
+            // Limpar formulário
+            if (teamForm) teamForm.reset();
+            if (logoInput) logoInput.value = '';
+            if (uploadContent) uploadContent.style.display = 'flex';
+            if (uploadPreview) uploadPreview.style.display = 'none';
+            if (playersEl) {
+                playersEl.innerHTML = '';
+                for (let i = 0; i < 6; i++) {
+                    addPlayer();
+                }
+            }
+            
+            // Limpar dados
+            inscriptionData = null;
+            
+            // Voltar para primeira etapa
+            showStep(1);
+            
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+            alert('Erro ao gerar PDF. Tente novamente.');
+        }
+    });
+}
 
 // Fechar modal ao clicar no backdrop
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        closeModalFn();
-    }
-});
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModalFn();
+        }
+    });
+}
 
 // Fechar modal com ESC
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('show')) {
+    if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
         closeModalFn();
     }
 });
 
 // Inicialização
 (function init() {
-    updateProgress();
-    updateSteps();
-    showStep(1);
+    console.log('Inicializando sistema de etapas...');
+    
+    // Aguardar um pouco para garantir que o DOM está carregado
+    setTimeout(() => {
+        updateProgress();
+        updateSteps();
+        showStep(1);
+        console.log('Sistema de etapas inicializado!');
+    }, 100);
 })();
