@@ -799,3 +799,175 @@ select:focus-visible {
 ::selection {
     background: rgba(37, 99, 235, 0.2);
 }
+
+/* =============================
+   Minimal clean theme overrides
+   ============================= */
+
+:root {
+	--primary: #000000;
+	--secondary: #D4AF37; /* gold */
+	--accent: #F0D68A; /* light gold */
+	--bg-primary: #ffffff;
+	--bg-secondary: #f7f7f8;
+	--bg-tertiary: #f0f0f2;
+	--text-primary: #000000;
+	--text-secondary: #4b5563;
+	--text-muted: #9ca3af;
+	--border: #e5e7eb;
+	--border-light: #f1f5f9;
+}
+
+.header {
+	background: var(--bg-primary);
+	border-bottom: 1px solid var(--border-light);
+}
+
+.header.scrolled {
+	background: var(--bg-primary);
+	border-bottom: 1px solid var(--border-light);
+}
+
+.header.scrolled .header-container {
+	justify-content: space-between;
+}
+
+.header.scrolled .logo {
+	position: static;
+	left: auto;
+	transform: none;
+}
+
+.hero {
+	background: var(--bg-primary);
+}
+
+.hero::before,
+.hero .section-divider {
+	display: none;
+}
+
+.hero-badge {
+	background: transparent;
+	color: var(--text-primary);
+	border: 1px solid var(--border);
+	box-shadow: none;
+}
+
+.highlight {
+	background: none;
+	-webkit-background-clip: initial;
+	-webkit-text-fill-color: initial;
+	background-clip: initial;
+	color: var(--secondary);
+}
+
+.primary-btn {
+	background: #000;
+	color: #fff;
+	box-shadow: none;
+}
+
+.primary-btn:hover {
+	filter: brightness(0.93);
+	transform: none;
+	box-shadow: none;
+}
+
+.whatsapp-btn {
+	background: transparent;
+	color: #000;
+	border: 1px solid #000;
+	box-shadow: none;
+}
+
+.whatsapp-btn:hover {
+	background: #000;
+	color: #fff;
+	transform: none;
+	box-shadow: none;
+}
+
+.inscription-btn {
+	background: #000;
+	color: #fff;
+	box-shadow: none;
+}
+
+.inscription-btn:hover {
+	filter: brightness(0.93);
+	transform: none;
+	box-shadow: none;
+}
+
+.floating-card {
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: var(--shadow-sm);
+	border: 1px solid var(--border);
+	animation: none;
+}
+
+.card-icon {
+	background: transparent;
+	border: 1px solid var(--border);
+	color: var(--secondary);
+}
+
+.section-title {
+	-webkit-text-fill-color: initial;
+	background: none;
+	color: var(--text-primary);
+}
+
+/* Replace gradient border by simple minimal card */
+.feature-card {
+	background: var(--bg-primary);
+	border: 1px solid var(--border);
+	box-shadow: var(--shadow-sm);
+}
+
+.feature-card:hover {
+	box-shadow: var(--shadow);
+	transform: translateY(-4px);
+}
+
+.feature-icon {
+	width: 64px;
+	height: 64px;
+	background: transparent;
+	border: 1px solid var(--border);
+	color: var(--secondary);
+}
+
+.social-link:hover {
+	background: #000;
+	color: #fff;
+	border-color: #000;
+}
+
+::selection {
+	background: rgba(212, 175, 55, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-primary: #0a0a0a;
+		--bg-secondary: #0d0d0e;
+		--bg-tertiary: #111112;
+		--text-primary: #f3f4f6;
+		--text-secondary: #cbd5e1;
+		--border: #1f2937;
+		--border-light: #111318;
+	}
+
+	.whatsapp-btn {
+		color: var(--text-primary);
+		border-color: var(--text-primary);
+	}
+
+	.whatsapp-btn:hover {
+		background: var(--text-primary);
+		color: #000;
+	}
+}
